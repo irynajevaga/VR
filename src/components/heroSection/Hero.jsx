@@ -48,10 +48,20 @@ function HeroSection() {
                         >
                             COACHING
                         </p>
+                        <p  className={`font-light text-xl sm:text-2xl md:text-3xl ${
+                                mode === "dark" ? "text-[black]" : "text-[#372c45]"
+                            }`}
+                            style={{
+                              fontSize:"16px",
+                              marginTop:"40px",
+                              lineHeight:"22px",
+                              fontStyle:"italic",
+
+                            }}>Veränderungen beginnen bei uns selbst.<br></br>Ich bin bereit, dich in deinem Vorhaben<br></br> zu unterstützen.</p>
                     </div>
                 </main>
             </div>
-
+           
             {/* Light Blur Filter */}
             {/* <div className="absolute inset-0 bg-black opacity-30 z-0 blur-md"></div> */}
 

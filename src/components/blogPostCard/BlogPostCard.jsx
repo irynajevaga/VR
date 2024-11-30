@@ -18,6 +18,14 @@ function BlogPostCard() {
 
     return (
         <div>
+             <div style={{margin:"60px auto 20px",width:"55%",}}
+                                className={`border-b mb-5 ${
+                                    mode === "dark"
+                                        ? "border-gray-600"
+                                        : "border-gray-400"
+                                }`}
+                            />
+
             <section className="text-gray-600 body-font">
                 <div className="container px-5 py-10 mx-auto max-w-7xl">
                     {/* Main Content */}
@@ -66,7 +74,7 @@ function BlogPostCard() {
                     </div>
 
                     {/* See More Button */}
-                    <div className="flex justify-center my-5">
+                    {/* <div className="flex justify-center my-5">
                         <Button
                             style={{
                                 background:
@@ -84,7 +92,7 @@ function BlogPostCard() {
                         >
                             See More
                         </Button>
-                    </div>
+                    </div> */}
                 </div>
             </section>
         </div>

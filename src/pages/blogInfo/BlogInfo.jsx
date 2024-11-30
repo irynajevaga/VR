@@ -119,11 +119,11 @@ function BlogInfo() {
                     ) : (
                         <div>
                             {/* Thumbnail  */}
-                            <img
+                            {/* <img
                                 alt="content"
                                 className="mb-3 rounded-lg h-full w-full"
                                 src={getBlogs?.thumbnail}
-                            />
+                            /> */}
                             {/* title And date  */}
                             <div className="flex justify-between items-center mb-3">
                                 <h1
