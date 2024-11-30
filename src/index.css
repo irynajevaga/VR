@@ -5,56 +5,9 @@
 pre{
     border-radius: 8px;
     background-color: #4f5358e6 !important;
-    color: rgb(217, 225, 225) !important;
+    color: rgb(124, 142, 142) !important;
     scroll-padding-top: 20px;
     overflow-x: scroll;
     padding: 15px;
     margin-bottom: 15px;
   }
-
-  /* Анимация для текста */
-@keyframes fadeIn {
-  0% {
-      opacity: 0;
-      transform: translateY(20px);
-  }
-  100% {
-      opacity: 1;
-      transform: translateY(0);
-  }
-}
-
-@keyframes titleAnimation {
-  0% {
-      transform: scale(0.9);
-      opacity: 0;
-  }
-  100% {
-      transform: scale(1);
-      opacity: 1;
-  }
-}
-
-@keyframes subtitleAnimation {
-  0% {
-      transform: scale(0.8);
-      opacity: 0;
-  }
-  100% {
-      transform: scale(1);
-      opacity: 1;
-  }
-}
-
-/* Применение анимации */
-.animate-fadeIn {
-  animation: fadeIn 1.5s ease-in-out;
-}
-
-.animate-title {
-  animation: titleAnimation 1s ease-out;
-}
-
-.animate-subtitle {
-  animation: subtitleAnimation 1.5s ease-out 0.5s forwards; /* Задержка для параграфа */
-}

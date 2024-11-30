@@ -1,15 +1,8 @@
 import React from "react";
-import {
-    Navbar,
-    Typography,
-    IconButton,
-    Avatar,
-    Collapse,
-} from "@material-tailwind/react";
+import { Navbar, IconButton, Avatar, Collapse } from "@material-tailwind/react";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import myContext from "../../context/data/myContext";
-import SearchDialog from "../searchDialog/SearchDialog";
 
 export default function Nav() {
     const [openNav, setOpenNav] = React.useState(false);
@@ -17,59 +10,22 @@ export default function Nav() {
     const { mode, toggleMode } = context;
     const admin = localStorage.getItem("admin");
 
-    // NavList items
-    const navList = (
-        <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-            <Typography
-                as="li"
-                variant="small"
-                className="p-1 font-normal"
-                style={{ color: mode === "dark" ? "white" : "black" }}
-            >
-                <Link to={"/"} className="flex items-center">
-                    Home
-                </Link>
-            </Typography>
-            <Typography
-                as="li"
-                variant="small"
-                className="p-1 font-normal"
-                style={{ color: mode === "dark" ? "white" : "black" }}
-            >
-                <Link to={"/allblogs"} className="flex items-center">
-                   Über mich
-                </Link>
-            </Typography>
-            {!admin && (
-                <Typography
-                    as="li"
-                    variant="small"
-                    className="p-1 font-normal"
-                    style={{ color: mode === "dark" ? "white" : "black" }}
-                >
-                  
-                </Typography>
-            )}
-        </ul>
-    );
-
     return (
         <>
             <Navbar
                 className="sticky inset-0 z-20 h-max max-w-full border-none rounded-none py-2 px-4 lg:px-8 lg:py-2"
                 style={{
                     background: mode === "dark"
-                        ? "rgba(48, 25, 25, 0.4)" // Темный бордово-серый цвет
-                        : "rgba(245, 245, 220, 0.1)", // Светлый бежево-серый цвет
-                    backdropFilter: "blur(90px)", // Эффект размытия
+                        ? "rgba(48, 25, 25, 0.4)" 
+                        : "rgba(280, 245, 220, 0.2)", 
+                    backdropFilter: "blur(90px)", 
                     WebkitBackdropFilter: "blur(90px)", // Поддержка для Safari
                 }}
             >
                 <div className="flex items-center justify-between text-blue-gray-900">
-                    {/* Home Link */}
+                    {/* Logo */}
                     <Link to={"/"}>
-                        <Typography
-                            as="a"
+                        <div
                             className="mr-4 cursor-pointer py-1.5 text-xl font-bold flex gap-2 items-center"
                             style={{
                                 color: mode === "dark" ? "white" : "black",
@@ -80,46 +36,94 @@ export default function Nav() {
                                 src="src/assets/logo.svg"
                                 alt="Logo"
                             />
-                        </Typography>
+                        </div>
                     </Link>
 
+                    {/* Social Media Icons */}
+                    <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
+                        <a
+                            className="text-gray-500"
+                            href="https://www.facebook.com/"
+                        >
+                            <svg
+                                fill="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                className="w-8 h-8" // Увеличенный размер
+                                viewBox="0 0 24 24"
+                            >
+                                <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
+                            </svg>
+                        </a>
+                        <a
+                            className="ml-5 text-gray-500" // Увеличенный отступ
+                            href="https://twitter.com/home?lang=en"
+                        >
+                            <svg
+                                fill="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                className="w-8 h-8"
+                                viewBox="0 0 24 24"
+                            >
+                                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
+                            </svg>
+                        </a>
+                        <a
+                            className="ml-5 text-gray-500"
+                            href="https://www.instagram.com/"
+                        >
+                            <svg
+                                fill="none"
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                className="w-8 h-8"
+                                viewBox="0 0 24 24"
+                            >
+                                <rect
+                                    width={20}
+                                    height={20}
+                                    x={2}
+                                    y={2}
+                                    rx={5}
+                                    ry={5}
+                                />
+                                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01" />
+                            </svg>
+                        </a>
+                    </span>
+
                     {/* Navigation Items */}
-                    <div className="flex items-center gap-4">
-                        {/* Desktop Navigation */}
-                        <div className="hidden lg:block">{navList}</div>
-
-                        {/* Search Dialog */}
-                        <div className="cursor-pointer">
-                            <SearchDialog />
-                        </div>
-
+                    <div className="flex items-center gap-8">
                         {/* Admin Profile Picture */}
-                        <div>
+                        {admin && (
                             <Link to={"/dashboard"}>
-                                {admin && (
-                                    <Avatar
-                                        src={
-                                            "https://cdn-icons-png.flaticon.com/128/3135/3135715.png"
-                                        }
-                                        alt="avatar"
-                                        withBorder={true}
-                                        className="p-0.5 text-red-500 w-10 h-10"
-                                        style={{
-                                            border:
-                                                mode === "dark"
-                                                    ? "2px solid rgb(226, 232, 240)"
-                                                    : "2px solid rgb(30, 41, 59)",
-                                        }}
-                                    />
-                                )}
+                                <Avatar
+                                    src={
+                                        "https://cdn-icons-png.flaticon.com/128/3135/3135715.png"
+                                    }
+                                    alt="avatar"
+                                    withBorder={true}
+                                    className="p-0.5 text-red-500 w-12 h-12"
+                                    style={{
+                                        border:
+                                            mode === "dark"
+                                                ? "2px solid rgb(226, 232, 240)"
+                                                : "2px solid rgb(30, 41, 59)",
+                                    }}
+                                />
                             </Link>
-                        </div>
+                        )}
 
                         {/* Theme Toggle Button */}
                         <div>
                             <IconButton
                                 onClick={toggleMode}
-                                className="lg:inline-block rounded-full"
+                                className="rounded-full ml-12" 
                                 style={{
                                     background: mode === "light"
                                         ? "#ced6e0"
@@ -160,57 +164,8 @@ export default function Nav() {
                                 )}
                             </IconButton>
                         </div>
-
-                        {/* Mobile Toggle */}
-                        <div>
-                            <IconButton
-                                className="ml-auto h-10 w-10 text-inherit rounded-lg lg:hidden"
-                                ripple={false}
-                                onClick={() => setOpenNav(!openNav)}
-                                style={{
-                                    background: mode === "light"
-                                        ? "#ced6e0"
-                                        : "#57606f",
-                                    color: mode === "dark" ? "white" : "black",
-                                }}
-                            >
-                                {openNav ? (
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        className="h-6 w-6"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        strokeWidth={2}
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M6 18L18 6M6 6l12 12"
-                                        />
-                                    </svg>
-                                ) : (
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-6 w-6"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth={2}
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M4 6h16M4 12h16M4 18h16"
-                                        />
-                                    </svg>
-                                )}
-                            </IconButton>
-                        </div>
                     </div>
                 </div>
-
-                {/* Mobile View */}
-                <Collapse open={openNav}>{navList}</Collapse>
             </Navbar>
         </>
     );

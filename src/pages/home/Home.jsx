@@ -3,6 +3,7 @@ import Layout from "../../components/layout/Layout";
 import HeroSection from "../../components/heroSection/Hero";
 import BlogPostCard from "../../components/blogPostCard/BlogPostCard";
 import Loader from "../../components/loader/Loader";
+import BlogInfo from "../../pages/blogInfo/BlogInfo";
 
 const Home = () => {
     useEffect(() => {
@@ -12,6 +13,7 @@ const Home = () => {
         <Layout>
             <HeroSection />
             <BlogPostCard />
+            <BlogInfo />
             {/* <Loader /> */}
         </Layout>
     );

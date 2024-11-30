@@ -1,4 +1,3 @@
-import { Typography } from "@material-tailwind/react";
 import React, { useContext } from "react";
 import myContext from "../../context/data/myContext";
 
@@ -9,8 +8,8 @@ function HeroSection() {
     return (
         <section
             style={{
-                backgroundImage: `url('src/assets/Hero.jpg')`,
-                backgroundSize: "cover",
+                backgroundImage: `url('src/assets/Hero10.jpg')`,
+                backgroundSize: "contain",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
                 minHeight: "100vh",
@@ -25,14 +24,13 @@ function HeroSection() {
                         <div className="mb-4">
                             {/* Title */}
                             <h1
-                                className={`font-bold ${
-                                    mode === "dark" ? "text-[#800020]" : "text-[#FFBF00]"
+                                className={`font-bold text-3xl sm:text-4xl md:text-5xl ${
+                                    mode === "dark" ? "text-[black]" : "text-[#372c45]"
                                 }`}
                                 style={{
-                                    fontSize: "3rem", // Размер заголовка
-                                    lineHeight: "1.2", // Межстрочный интервал
+                                   
+                                   
                                 }}
-                                className="animate-title"
                             >
                                 VERONIKA REIMER
                             </h1>
@@ -40,15 +38,13 @@ function HeroSection() {
 
                         {/* Subtitle */}
                         <p
-                            className={`font-light ${
-                                mode === "dark" ? "text-[#FFBF00]" : "text-[#800020]"
+                            className={`font-light text-xl sm:text-2xl md:text-3xl ${
+                                mode === "dark" ? "text-[black]" : "text-[#372c45]"
                             }`}
                             style={{
-                                fontSize: "1.5rem", // Размер текста подзаголовка
-                                lineHeight: "2.5",
-                                marginTop: "0.5rem",
+                              
+                                
                             }}
-                            className="animate-subtitle"
                         >
                             COACHING
                         </p>
@@ -57,10 +53,10 @@ function HeroSection() {
             </div>
 
             {/* Light Blur Filter */}
-            <div className="absolute inset-0 bg-black opacity-30 z-0 blur-md"></div>
+            {/* <div className="absolute inset-0 bg-black opacity-30 z-0 blur-md"></div> */}
 
             {/* Light Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-40 z-0"></div>
+            {/* <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-40 z-0"></div> */}
         </section>
     );
 }

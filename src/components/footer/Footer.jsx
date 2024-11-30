@@ -8,7 +8,7 @@ function Footer() {
         <footer
             className="body-font"
             style={{
-                background: mode === "dark" ? "rgb(30, 41, 59)" : "#30336b",
+                background: mode === "dark" ? "rgb(30, 41, 59)" : "#372c45",
             }}
         >
             {/* Left Content  */}
