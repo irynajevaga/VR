@@ -18,20 +18,19 @@ function BlogPostCard() {
 
     return (
         <div>
-             <div style={{margin:"60px auto 20px",width:"55%",}}
-                                className={`border-b mb-5 ${
-                                    mode === "dark"
-                                        ? "border-gray-600"
-                                        : "border-gray-400"
-                                }`}
-                            />
+            <div
+                style={{ margin: "60px auto 20px", width: "55%" }}
+                className={`border-b mb-5 ${
+                    mode === "dark" ? "border-gray-600" : "border-gray-400"
+                }`}
+            />
 
             <section className="text-gray-600 body-font">
                 <div className="container px-5 py-10 mx-auto max-w-7xl">
                     {/* Main Content */}
-                    <div className="flex flex-wrap justify-center -m-4 mb-5">
+                    <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-3 justify-center">
                         {cards.map((item, index) => (
-                            <div className="p-4 md:w-1/3" key={index}>
+                            <div key={index} className="relative mx-auto w-full  sm:w-2/3 md:w-1/2 lg:w-full  min-w-[300px]">
                                 <div
                                     onClick={() => navigate(`/bloginfo/${index + 1}`)} // Переход на блог
                                     style={{
@@ -72,27 +71,6 @@ function BlogPostCard() {
                             </div>
                         ))}
                     </div>
-
-                    {/* See More Button */}
-                    {/* <div className="flex justify-center my-5">
-                        <Button
-                            style={{
-                                background:
-                                    mode === "dark"
-                                        ? "#372c45"
-                                        : "rgba(211, 211, 211, 0.6)",
-                                color:
-                                    mode === "dark"
-                                        ? "rgb(226, 232, 240)"
-                                        : "rgb(30, 41, 59)",
-                                fontWeight: "bold",
-                                padding: "10px 20px",
-                                borderRadius: "8px",
-                            }}
-                        >
-                            See More
-                        </Button>
-                    </div> */}
                 </div>
             </section>
         </div>
