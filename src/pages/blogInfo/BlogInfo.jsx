@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import myContext from "../../context/data/myContext";
 import { useParams } from "react-router";
 import {
     Timestamp,
@@ -11,241 +10,163 @@ import {
     orderBy,
     query,
 } from "firebase/firestore";
+import myContext from "../../context/data/myContext";
 import { fireDB } from "../../firebase/FirebaseConfig";
-import Layout from "../../components/layout/Layout";
-import Loader from "../../components/loader/Loader";
-import Comment from "../../components/comment/Comment";
 import toast from "react-hot-toast";
 
 function BlogInfo() {
-    const context = useContext(myContext);
-    const { mode, setloading, loading } = context;
-
+    const { mode, setloading, loading } = useContext(myContext);
     const params = useParams();
 
-    //* getBlogs State
     const [getBlogs, setGetBlogs] = useState();
+    const [allComment, setAllComment] = useState([]);
+    const [fullName, setFullName] = useState("");
+    const [email, setEmail] = useState("");
+    const [commentText, setCommentText] = useState("");
 
     const getAllBlogs = async () => {
         setloading(true);
         try {
-            const productTemp = await getDoc(
-                doc(fireDB, "blogPost", params.id)
-            );
-            if (productTemp.exists()) {
-                setGetBlogs(productTemp.data());
+            const docSnapshot = await getDoc(doc(fireDB, "blogPost", params.id));
+            if (docSnapshot.exists()) {
+                setGetBlogs(docSnapshot.data());
             } else {
-                console.log("Document does not exist");
+                console.error("Документ не существует");
             }
             setloading(false);
         } catch (error) {
-            console.log(error);
+            console.error(error);
             setloading(false);
         }
     };
 
-    // console.log(getBlogs)
+    const getComments = async () => {
+        try {
+            const q = query(
+                collection(fireDB, `blogPost/${params.id}/comment`),
+                orderBy("time", "desc")
+            );
+            onSnapshot(q, (snapshot) => {
+                const commentsArray = snapshot.docs.map((doc) => ({
+                    ...doc.data(),
+                    id: doc.id,
+                }));
+                setAllComment(commentsArray);
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const addComment = async () => {
+        if (!fullName || !email || !commentText) {
+            toast.error("Bitte füllen Sie alle Felder aus.");
+            return;
+        }
+        try {
+            await addDoc(
+                collection(fireDB, `blogPost/${params.id}/comment`),
+                {
+                    fullName,
+                    email,
+                    commentText,
+                    time: Timestamp.now(),
+                    date: new Date().toLocaleString("de-DE", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                    }),
+                }
+            );
+            toast.success("Kommentar erfolgreich hinzugefügt!");
+            setFullName("");
+            setEmail("");
+            setCommentText("");
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     useEffect(() => {
         getAllBlogs();
-        window.scrollTo(0, 0);
-    }, []);
-
-    //* Create markup function
-    function createMarkup(c) {
-        return { __html: c };
-    }
-
-    const [fullName, setFullName] = useState("");
-    const [commentText, setCommentText] = useState("");
-
-    const addComment = async () => {
-        const userRef = collection(
-            fireDB,
-            "blogPost/" + `${params.id}/` + "comment"
-        );
-        try {
-            await addDoc(userRef, {
-                fullName,
-                commentText,
-                time: Timestamp.now(),
-                date: new Date().toLocaleString("en-US", {
-                    month: "short",
-                    day: "2-digit",
-                    year: "numeric",
-                }),
-            });
-            toast.success("Comment Add Successfully");
-            setFullName("");
-            setCommentText("");
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const [allComment, setAllComment] = useState([]);
-
-    const getcomment = async () => {
-        try {
-            const q = query(
-                collection(fireDB, "blogPost/" + `${params.id}/` + "comment/"),
-                orderBy("time")
-            );
-            const data = onSnapshot(q, (QuerySnapshot) => {
-                let productsArray = [];
-                QuerySnapshot.forEach((doc) => {
-                    productsArray.push({ ...doc.data(), id: doc.id });
-                });
-                setAllComment(productsArray);
-                console.log(productsArray);
-            });
-            return () => data;
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    useEffect(() => {
-        getcomment();
+        getComments();
         window.scrollTo(0, 0);
     }, []);
 
     return (
-        // <Layout>
-            <section className="rounded-lg h-full overflow-hidden max-w-4xl mx-auto px-4 ">
-                <div className=" py-4 lg:py-8">
-                    {loading ? (
-                        <Loader />
-                    ) : (
-                        <div>
-                            {/* Thumbnail  */}
-                            {/* <img
-                                alt="content"
-                                className="mb-3 rounded-lg h-full w-full"
-                                src={getBlogs?.thumbnail}
-                            /> */}
-                            {/* title And date  */}
-                            <div className="flex justify-between items-center mb-3">
-                                <h1
-                                    style={{
-                                        color:
-                                            mode === "dark" ? "white" : "black",
-                                    }}
-                                    className=" text-xl md:text-2xl lg:text-2xl font-semibold"
-                                >
-                                    {getBlogs?.blogs?.title}
-                                </h1>
-                                <p
-                                    style={{
-                                        color:
-                                            mode === "dark" ? "white" : "black",
-                                    }}
-                                >
-                                    {getBlogs?.date}
-                                </p>
-                            </div>
+        <div className={`max-w-4xl mx-auto px-4 py-8 ${mode === "dark" ? " text-white" : " text-gray-800"}`}>
+            {loading ? (
+                <div className="text-center">Wird geladen...</div>
+            ) : (
+                <>
+                    {getBlogs && (
+                        <>
+                            <h1 className="text-2xl font-bold mb-2">{getBlogs.blogs.title}</h1>
+                            <p className="text-sm text-gray-500 mb-4">{getBlogs.date}</p>
                             <div
-                                className={`border-b mb-5 ${
-                                    mode === "dark"
-                                        ? "border-gray-600"
-                                        : "border-gray-400"
-                                }`}
+                                className="prose lg:prose-xl mb-8"
+                                dangerouslySetInnerHTML={{ __html: getBlogs.blogs.content }}
                             />
-
-                            {/* blog Content  */}
-                            <div className="content">
-                                <div
-                                    className={`[&> h1]:text-[32px] [&>h1]:font-bold  [&>h1]:mb-2.5
-                        ${
-                            mode === "dark"
-                                ? "[&>h1]:text-[#ff4d4d]"
-                                : "[&>h1]:text-black"
-                        }
-
-                        [&>h2]:text-[24px] [&>h2]:font-bold [&>h2]:mb-2.5
-                        ${
-                            mode === "dark"
-                                ? "[&>h2]:text-white"
-                                : "[&>h2]:text-black"
-                        }
-
-                        [&>h3]:text-[18.72] [&>h3]:font-bold [&>h3]:mb-2.5
-                        ${
-                            mode === "dark"
-                                ? "[&>h3]:text-white"
-                                : "[&>h3]:text-black"
-                        }
-
-                        [&>h4]:text-[16px] [&>h4]:font-bold [&>h4]:mb-2.5
-                        ${
-                            mode === "dark"
-                                ? "[&>h4]:text-white"
-                                : "[&>h4]:text-black"
-                        }
-
-                        [&>h5]:text-[13.28px] [&>h5]:font-bold [&>h5]:mb-2.5
-                        ${
-                            mode === "dark"
-                                ? "[&>h5]:text-white"
-                                : "[&>h5]:text-black"
-                        }
-
-                        [&>h6]:text-[10px] [&>h6]:font-bold [&>h6]:mb-2.5
-                        ${
-                            mode === "dark"
-                                ? "[&>h6]:text-white"
-                                : "[&>h6]:text-black"
-                        }
-
-                        [&>p]:text-[16px] [&>p]:mb-1.5
-                        ${
-                            mode === "dark"
-                                ? "[&>p]:text-[#7efff5]"
-                                : "[&>p]:text-black"
-                        }
-
-                        [&>ul]:list-disc [&>ul]:mb-2
-                        ${
-                            mode === "dark"
-                                ? "[&>ul]:text-white"
-                                : "[&>ul]:text-black"
-                        }
-
-                        [&>ol]:list-decimal [&>li]:mb-10
-                        ${
-                            mode === "dark"
-                                ? "[&>ol]:text-white"
-                                : "[&>ol]:text-black"
-                        }
-
-                        [&>li]:list-decimal [&>ol]:mb-2
-                        ${
-                            mode === "dark"
-                                ? "[&>ol]:text-white"
-                                : "[&>ol]:text-black"
-                        }
-
-                        [&>img]:rounded-lg
-                        `}
-                                    dangerouslySetInnerHTML={createMarkup(
-                                        getBlogs?.blogs?.content
-                                    )}
-                                ></div>
-                            </div>
-                        </div>
+                        </>
                     )}
-
-                    <Comment
-                        addComment={addComment}
-                        commentText={commentText}
-                        setCommentText={setCommentText}
-                        allComment={allComment}
-                        fullName={fullName}
-                        setFullName={setFullName}
+                </>
+            )}
+            <div className="border-t pt-6 mt-6">
+                <h2 className="text-xl font-semibold mb-4">Kontaktformular</h2>
+                <div className="space-y-4">
+                    <input
+                        type="text"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        placeholder="* Name"
+                        className="w-full p-3 border rounded-md bg-[#f3faff]"
                     />
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="* E-Mail"
+                        className="w-full p-3 border rounded-md bg-[#f3faff]"
+                    />
+                    <textarea
+                        value={commentText}
+                        onChange={(e) => setCommentText(e.target.value)}
+                        placeholder="Hinterlassen Sie eine Nachricht"
+                        className="w-full p-3 border rounded-md bg-[#f3faff]"
+                        rows="4"
+                    />
+                    <button
+                        onClick={addComment}
+                        className="px-6 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition"
+                    >
+                       Senden
+                    </button>
                 </div>
-            </section>
-        // </Layout>
+            </div>
+            <div className="mt-8">
+                {allComment.length > 0 && (
+                    <>
+                        <h2 className="text-xl font-semibold mb-4">Kommentare</h2>
+                        <div className="space-y-4">
+                            {allComment.map((comment) => (
+                                <div
+                                    key={comment.id}
+                                    className={`p-4 border rounded-md shadow-sm ${
+                                        mode === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
+                                    }`}
+                                >
+                                    <div className="flex justify-between items-center mb-2">
+                                        <p className="font-bold">{comment.fullName}</p>
+                                        <p className="text-xs text-gray-500">{comment.date}</p>
+                                    </div>
+                                    <p>{comment.commentText}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </>
+                )}
+            </div>
+        </div>
     );
 }
 
