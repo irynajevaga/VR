@@ -68,8 +68,7 @@ function BlogPostCard() {
                                         backgroundPosition: index === 1 ? "center 25%" : "center", // Смещение для "Online"
                                         backgroundRepeat: "no-repeat",
                                     }}
-                                    className={`h-64 rounded-xl shadow-lg hover:-translate-y-1 cursor-pointer 
-                                    ${mode === "dark" ? "shadow-gray-700" : "shadow-gray-400"} 
+                                    className={`h-64 rounded-xl hover:-translate-y-1 cursor-pointer 
                                     flex items-end overflow-hidden`}
                                 >
                                     <div
@@ -98,13 +97,22 @@ function BlogPostCard() {
                         ))}
                     </div>
                 </div>
-            </section>
+            </section> 
+
+            <div
+                style={{ margin: "60px auto 20px", width: "55%" }}
+                className={`border-b mt-5 ${
+                    mode === "dark" ? "border-gray-600" : "border-gray-400"
+                }`}
+            />
 
             {/* Модальное окно */}
             {isModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                     <div
-                        className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full relative"
+                        className={`p-6 rounded-lg shadow-lg max-w-lg w-full relative ${
+                            mode === "dark" ? "bg-[#121826]" : "bg-[#FFFFFF]"
+                        }`}
                         style={{
                             animation: "load 1.2s forwards", // Анимация модального окна
                         }}
@@ -117,7 +125,9 @@ function BlogPostCard() {
                         </button>
                         {/* Плавное появление текста */}
                         <p
-                            className={`text-gray-700 transform transition-all duration-700 ${
+                            className={`transform transition-all duration-700 ${
+                                mode === "dark" ? "text-[#FFF]" : "text-[#372c45]"
+                            } ${
                                 isTextVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                             }`}
                         >
