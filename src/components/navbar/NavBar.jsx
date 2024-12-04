@@ -16,7 +16,7 @@ export default function Nav() {
                 className="sticky inset-0 z-20 h-max max-w-full border-none rounded-none py-2 px-4 lg:px-8 lg:py-2"
                 style={{
                     background: mode === "dark"
-                        ? "rgba(48, 25, 25, 0.4)" 
+                        ? "rgb(30, 41, 59)" 
                         : "rgba(280, 245, 220, 0.2)", 
                     backdropFilter: "blur(90px)", 
                     WebkitBackdropFilter: "blur(90px)", // Поддержка для Safari
